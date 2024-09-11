@@ -44,8 +44,8 @@ int main(int argc, char *argv[])
 
     double t;
     while (input_file_2 >> t) {
-        n *= 100;
-        targets.push_back(n);
+        t *= 100;
+        targets.push_back(t);
     }
 
     auto e = estimateTimeMulti(nums, targets);

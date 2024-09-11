@@ -114,7 +114,7 @@ std::vector<double> toCurrency(std::vector<int> solution) {
 
 void printSolution(int target, std::vector<double> &solution) {
     // double total = 0;
-    std::cout << target << ' [';
+    std::cout << target << " [";
     for (const auto &n:solution) {
         // total += n;
         std::cout << n << ", ";
