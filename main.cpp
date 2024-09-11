@@ -1,9 +1,9 @@
-// ./filereadArgs.cpp number.txt sums.txt
+// ./main.cpp numbers.txt sums.txt
 #include <algorithm>
 #include <fstream>
 #include <string>
 #include <vector>
-#include "subsetSumsClass.h"
+#include "subsetSums.h"
 
 int main(int argc, char *argv[])
 {

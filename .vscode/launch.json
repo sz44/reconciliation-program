@@ -5,8 +5,8 @@
             "name": "Build and Run",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/${fileBasenameNoExtension}",  // Specify the built executable
-            "args": ["a.txt", "b.txt"],               // Arguments to pass to the program
+            "program": "${workspaceFolder}/bin/${fileBasenameNoExtension}",  // Specify the built executable
+            "args": ["./example_data/a.txt", "./example_data/b.txt"],               // Arguments to pass to the program
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",              // Working directory
             "environment": [],

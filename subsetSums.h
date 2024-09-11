@@ -3,18 +3,26 @@
 #include <algorithm>
 #include <cstdlib>
 
+// case a: if nums == {} (empty set), False for all k
+// case b: if n == k, (where n is ith number of nums), True
+// case c: if row-1 == True (subset already True), True
+// case d: if k-n == True (in prev rows/ subset), True
+
 std::vector<std::vector<bool>> subsetSumTable(const std::vector<int> &nums, const int k) {
     auto minValItr = std::min_element(nums.begin(), nums.end());
+    // check for all positive
     int minVal = *minValItr < 0 ? *minValItr : 0;
     int ROWS = nums.size() + 1;
     int COLS = std::abs(minVal) + k + 1;
+    // if negative vales need to extend table right
     if (minVal < 0) {
         COLS += std::abs(minVal);
-    }
+    } 
     std::vector<std::vector<bool>> dp(ROWS, std::vector<bool>(COLS,false));
 
     for (int row = 1; row < ROWS; ++row) {
         for (int col = 0; col < COLS; ++col) {
+            // check cases b,c,d
             auto currentSum = col + minVal;
             auto b = currentSum == nums[row-1]; 
 
@@ -31,6 +39,8 @@ std::vector<std::vector<bool>> subsetSumTable(const std::vector<int> &nums, cons
     return dp;
 }
 
+// returns 1 solution 
+// TODO: return multiple solutions
 std::vector<int> subsetSum(const std::vector<std::vector<bool>> &table, const std::vector<int> &nums, const int k) {
     std::vector<int> res;
     auto minValItr = std::min_element(nums.begin(), nums.end());
@@ -38,10 +48,12 @@ std::vector<int> subsetSum(const std::vector<std::vector<bool>> &table, const st
     int row = table.size() - 1;
     int col = table[0].size() - 1 + minVal;
 
+    // case 1: no solution
     if (!table[row][col]) {
         return {};
     }
 
+    // case 2: target sum in nums list
     // todo: run this first, then instead of passing table run sebsetSumTable() here, 
     //       then check table[row][col],
     for (int n : nums) {
@@ -52,15 +64,18 @@ std::vector<int> subsetSum(const std::vector<std::vector<bool>> &table, const st
 
     while (row > 0 && col >= 0)
     {
+        // case b
         if (nums[row - 1] == col + minVal)
         {
             res.push_back(nums[row - 1]);
             break;
         }
+        // case c
         else if (table[row - 1][col])
         {
             --row;
         }
+        // case d
         else if (table[row - 1][col - nums[row - 1]]) // potential invalid index?
         {
             res.push_back(nums[row - 1]);
@@ -71,7 +86,7 @@ std::vector<int> subsetSum(const std::vector<std::vector<bool>> &table, const st
     return res;
 }
 
-void estimateTime(const std::vector<int>& nums, const int k) {
+double estimateTime(const std::vector<int>& nums, const int k) {
     std::vector<int> nums1 = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     int k1 = 55;
     clock_t start_time = clock();
@@ -87,9 +102,40 @@ void estimateTime(const std::vector<int>& nums, const int k) {
         mk = 1;
     }
     double estimate = elapsed_time * mn * mk;
-    std::cout << "Estimate time: " << estimate << " seconds\n";
+    return estimate;
 }
 
+double estimateTimeMulti(const std::vector<int> &nums, const std::vector<int> &targets) {
+    int maxVal = targets[0];
+    for (auto &n: targets) {
+        if (n > maxVal) {
+            maxVal = n;
+        }
+    }
+    auto e = estimateTime(nums, maxVal);
+    return e * targets.size();
+}
+
+std::vector<double> toCurrency(std::vector<int> solution) {
+    std::vector<double> currencies;
+
+    for (auto n: solution) {
+        double d = n / 100.0;
+        currencies.push_back(d);
+    }
+
+    return currencies;
+}
+
+void printSolution(int target, std::vector<double> &solution) {
+    std::cout << target << " [";
+    for (const auto &n:solution) {
+        std::cout << n << ", ";
+    }
+    std::cout << "]\n";
+}
+
+// generates ints between [-k,k]
 std::pair<std::vector<int>, int> generateTestData(int n, int k) {
     std::vector<int> nums(n);
     srand((unsigned int)time(NULL));
@@ -97,39 +143,4 @@ std::pair<std::vector<int>, int> generateTestData(int n, int k) {
         nums[i] = rand() % (2 * k + 1) - k;
     }
     return {nums, k};
-}
-
-int main() {
-    // auto nums = std::vector<int>{-1,3,5,-2,8};
-    // auto k = 7;
-    // auto nums = std::vector<int>{18, 52, 72, 92, 76, -83, 19, 74, -25, 69};
-    // auto k = 100;
-
-    auto [nums,k] = generateTestData(100, 1000000); 
-    std::cout << "target: " << k << std::endl;
-
-    for (const auto &i : nums)
-    {
-        std::cout << i << ", ";
-    }
-    std::cout << "\n";
-
-    estimateTime(nums,k);
-
-    clock_t start_time = clock();
-    auto table = subsetSumTable(nums, k);
-    clock_t stop_time = clock();
-    std::cout << "Time taken: " << double(stop_time - start_time) / CLOCKS_PER_SEC << " seconds\n";
-
-    start_time = clock();
-    auto solution = subsetSum(table, nums, k);
-    stop_time = clock();
-    std::cout << "Time taken: " << double(stop_time - start_time) / CLOCKS_PER_SEC << " seconds\n";
-
-    std::cout << '[';
-    for (const auto &n:solution) {
-        std::cout << n << ", ";
-    }
-    std::cout << "]\n";
-    return 0;
 }

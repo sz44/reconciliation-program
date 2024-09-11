@@ -9,7 +9,7 @@
                 "-g",
                 "${file}",
                 "-o",
-                "${fileDirname}/${fileBasenameNoExtension}",
+                "${fileDirname}/bin/${fileBasenameNoExtension}",
             ],
             "options": {
                 "cwd": "${fileDirname}"
@@ -26,10 +26,10 @@
         {
             "label": "run",
             "type": "shell",
-            "command": "./${fileBasenameNoExtension}",
+            "command": "${fileDirname}/bin/${fileBasenameNoExtension}",
             "args": [
-                "a.txt",
-                "b.txt"
+                "example_data/a.txt",
+                "example_data/b.txt"
             ],
             "group": {
                 "kind": "none",
