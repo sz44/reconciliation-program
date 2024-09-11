@@ -44,6 +44,10 @@ int main(int argc, char *argv[])
 
     double t;
     while (input_file_2 >> t) {
+        //TODO handle negative target sums
+        if (t < 0) {
+            throw std::invalid_argument("Error: target sums cannot be negative");
+        }
         t *= 100;
         targets.push_back(t);
     }
