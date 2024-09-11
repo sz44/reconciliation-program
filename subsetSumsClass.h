@@ -71,7 +71,7 @@ std::vector<int> subsetSum(const std::vector<std::vector<bool>> &table, const st
     return res;
 }
 
-void estimateTime(const std::vector<int>& nums, const int k) {
+double estimateTime(const std::vector<int>& nums, const int k) {
     std::vector<int> nums1 = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     int k1 = 55;
     clock_t start_time = clock();
@@ -87,7 +87,42 @@ void estimateTime(const std::vector<int>& nums, const int k) {
         mk = 1;
     }
     double estimate = elapsed_time * mn * mk;
-    std::cout << "Estimate time: " << estimate << " seconds\n";
+    return estimate;
+}
+
+double estimateTimeMulti(const std::vector<int> &nums, const std::vector<int> &targets) {
+    int maxVal = targets[0];
+    for (auto &n: targets) {
+        if (n > maxVal) {
+            maxVal = n;
+        }
+    }
+    auto e = estimateTime(nums, maxVal);
+    return e * targets.size();
+}
+
+std::vector<double> toCurrency(std::vector<int> solution) {
+    std::vector<double> currencies;
+
+    for (auto n: solution) {
+        double d = n / 100.0;
+        currencies.push_back(d);
+    }
+
+    return currencies;
+}
+
+void printSolution(int target, std::vector<double> &solution) {
+    // double total = 0;
+    std::cout << target << ' [';
+    for (const auto &n:solution) {
+        // total += n;
+        std::cout << n << ", ";
+    }
+    std::cout << "]\n";
+
+    // std::cout << total << "\n";
+
 }
 
 std::pair<std::vector<int>, int> generateTestData(int n, int k) {

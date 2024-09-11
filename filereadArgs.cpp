@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
         nums.push_back(n);
     }
 
-    int target;
+    std::vector<int> targets;
 
     std::ifstream input_file_2(argv[2], std::ifstream::in);
     if (!input_file_2.is_open())
@@ -43,38 +43,23 @@ int main(int argc, char *argv[])
     }
 
     double t;
-    input_file_2 >> t;
-    t *= 100;
-    target = t;
+    while (input_file_2 >> t) {
+        n *= 100;
+        targets.push_back(n);
+    }
 
-    estimateTime(nums, target);
+    auto e = estimateTimeMulti(nums, targets);
+    std::cout << "Estimate time: " << e << " seconds\n";
 
     clock_t start_time = clock();
-    auto table = subsetSumTable(nums, target);
+    for (const auto &target: targets) {
+        auto table = subsetSumTable(nums, target);
+        auto solution = subsetSum(table, nums, target);
+        auto curr = toCurrency(solution);
+        printSolution(target, curr);
+    }
     clock_t stop_time = clock();
     std::cout << "Time taken: " << double(stop_time - start_time) / CLOCKS_PER_SEC << " seconds\n";
-
-    start_time = clock();
-    auto solution = subsetSum(table, nums, target);
-    stop_time = clock();
-    std::cout << "Time taken: " << double(stop_time - start_time) / CLOCKS_PER_SEC << " seconds\n";
-
-    std::vector<double> solution_d;
-
-    for (auto n: solution) {
-        double d = n / 100.0;
-        solution_d.push_back(d);
-    }
-
-    double total = 0;
-    std::cout << '[';
-    for (const auto &n:solution_d) {
-        total += n;
-        std::cout << n << ", ";
-    }
-    std::cout << "]\n";
-
-    std::cout << total << "\n";
 
     return EXIT_SUCCESS;
 }
