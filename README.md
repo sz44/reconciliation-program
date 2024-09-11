@@ -3,16 +3,6 @@
 ## overview
 Reconciliation is a common accounting task. Basically it is comparing 2 lists of numbers to see if they match. A problem that can arise is when one of the lists has aggrageted values. In such a case the task becomes more difficult as it requires to find which numbers make up each aggrageted sum. This problem is also know as the subset sums probelm, and is NP-complete. The goal of this program is to make it easy and fast to determine which numbers sum to which sums.
 
-## usage
-Prepare two .txt files (any names). One file should be of the individual sums, the second file should be of the aggregated totals. One number per line (see exemple data).
-
-From terminal: ./bin/main numbers.txt sums.txt
-
-## build
-Build main.cpp with any c++ compiler 
-
-If using vscode run build task
-
 ## Usage
 
 1. Prepare two .txt files:
