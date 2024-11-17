@@ -59,8 +59,9 @@ int main(int argc, char *argv[])
     for (const auto &target: targets) {
         auto table = subsetSumTable(nums, target);
         auto solution = subsetSum(table, nums, target);
+        // to dollars  =/ 100
         auto curr = toCurrency(solution);
-        printSolution(target, curr);
+        printSolution(target/100, curr);
     }
     clock_t stop_time = clock();
     std::cout << "Time taken: " << double(stop_time - start_time) / CLOCKS_PER_SEC << " seconds\n";
